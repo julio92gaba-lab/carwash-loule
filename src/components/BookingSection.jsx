@@ -1,0 +1,113 @@
+import { useMemo, useState } from 'react'
+import Reveal from './Reveal'
+import { services, vehicleCategories } from '../lib/demoContent'
+import { VehicleIconFor } from './icons'
+
+const weekdays = ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom']
+
+function atMidnight(date) {
+  const copy = new Date(date)
+  copy.setHours(0, 0, 0, 0)
+  return copy
+}
+
+function availabilityFor(day, today) {
+  if (day < today) return 'past'
+  const score = (day.getDate() * 7 + day.getMonth() * 3) % 12
+  if (score === 0 || score === 1) return 'full'
+  if (score <= 4) return 'busy'
+  return 'open'
+}
+
+function slotsFor(service, day) {
+  if (!day || availabilityFor(day, atMidnight(new Date())) === 'full') return []
+  const openings = []
+  const closingMinutes = 19 * 60
+  for (let minutes = 9 * 60; minutes + service.durationMinutes <= closingMinutes; minutes += 30) {
+    const score = (minutes / 30 + day.getDate() + service.durationMinutes) % 7
+    if (score !== 0 && score !== 3) {
+      openings.push(`${String(Math.floor(minutes / 60)).padStart(2, '0')}:${String(minutes % 60).padStart(2, '0')}`)
+    }
+  }
+  return openings
+}
+
+function calendarDays(month) {
+  const start = new Date(month.getFullYear(), month.getMonth(), 1)
+  const total = new Date(month.getFullYear(), month.getMonth() + 1, 0).getDate()
+  const leading = (start.getDay() + 6) % 7
+  return [...Array(leading).fill(null), ...Array.from({ length: total }, (_, index) => new Date(month.getFullYear(), month.getMonth(), index + 1))]
+}
+
+const statusStyles = {
+  open: 'border-brand-green/35 bg-brand-green/10 text-white hover:border-brand-green hover:bg-brand-green/15',
+  busy: 'border-amber-400/50 bg-amber-400/10 text-white hover:border-amber-300',
+  full: 'border-red-400/35 bg-red-400/10 text-white/55 cursor-not-allowed',
+  past: 'border-white/5 bg-white/[.02] text-white/20 cursor-not-allowed',
+}
+
+export default function BookingSection() {
+  const [step, setStep] = useState(1)
+  const [vehicle, setVehicle] = useState('citadino')
+  const [serviceId, setServiceId] = useState('completa')
+  const [month, setMonth] = useState(() => new Date())
+  const [selectedDay, setSelectedDay] = useState(null)
+  const [time, setTime] = useState(null)
+  const [done, setDone] = useState(false)
+  const today = useMemo(() => atMidnight(new Date()), [])
+  const selectedService = services.find((item) => item.id === serviceId)
+  const days = calendarDays(month)
+  const slots = slotsFor(selectedService, selectedDay)
+  const isCurrentMonth = month.getFullYear() === today.getFullYear() && month.getMonth() === today.getMonth()
+
+  function chooseDay(day) {
+    const status = availabilityFor(day, today)
+    if (status === 'past' || status === 'full') return
+    setSelectedDay(day)
+    setTime(null)
+  }
+
+  function next() {
+    if (step === 1) setStep(2)
+    else if (step === 2 && selectedDay && time) setStep(3)
+    else if (step === 3) setDone(true)
+  }
+
+  if (done) return <section id="agendar" className="bg-brand-dark py-28 px-5"><div className="max-w-xl mx-auto rounded-[2rem] p-10 text-center bg-brand-dark2 border border-brand-green/30 shadow-neon"><div className="w-16 h-16 bg-brand-green text-black rounded-full flex items-center justify-center text-3xl mx-auto">✓</div><h2 className="text-white text-3xl font-semibold mt-6">Tudo pronto para a demonstração.</h2><p className="text-white/55 mt-3">O fluxo foi concluído visualmente. Nesta fase, nenhum agendamento é enviado ou guardado.</p><button onClick={() => { setDone(false); setStep(1); setSelectedDay(null); setTime(null) }} className="mt-7 text-brand-green text-sm font-semibold hover:text-white transition-all duration-300">Voltar ao agendamento</button></div></section>
+
+  return (
+    <section id="agendar" className="bg-brand-dark py-28 px-5 relative overflow-hidden">
+      <div className="absolute inset-0 grid-glow opacity-25" />
+      <div className="relative max-w-6xl mx-auto grid lg:grid-cols-[.72fr_1.28fr] gap-10 items-start">
+        <Reveal className="lg:sticky lg:top-28"><p className="text-brand-green text-xs uppercase tracking-[.25em] font-semibold">Reserve a sua vaga</p><h2 className="text-white text-4xl md:text-5xl font-bold tracking-[-.04em] leading-tight mt-4">Agendar ficou<br /><span className="text-brand-green text-neon">mais simples.</span></h2><p className="text-white/55 mt-5 max-w-sm leading-relaxed">Escolha o cuidado, consulte o mês completo e selecione o horário que melhor encaixa no seu dia.</p><div className="mt-9 space-y-3 text-xs text-white/55"><p className="flex items-center gap-2"><span className="w-2.5 h-2.5 rounded-full bg-brand-green" />Verde: boa disponibilidade</p><p className="flex items-center gap-2"><span className="w-2.5 h-2.5 rounded-full bg-amber-400" />Amarelo: últimas vagas</p><p className="flex items-center gap-2"><span className="w-2.5 h-2.5 rounded-full bg-red-400" />Vermelho: dia completo</p></div></Reveal>
+
+        <Reveal delay={100} className="bg-brand-dark2/95 border border-white/10 rounded-[2rem] p-5 sm:p-8 shadow-2xl shadow-black/30">
+          <div className="flex gap-2 mb-9">{['Serviço', 'Data e hora', 'Confirmar'].map((label, index) => { const number = index + 1; return <div key={label} className="flex-1"><div className={`h-1 rounded-full ${number <= step ? 'bg-brand-green' : 'bg-white/10'}`} /><p className={`text-xs mt-2 ${number === step ? 'text-brand-green' : 'text-white/35'}`}>{number}. {label}</p></div> })}</div>
+
+          {step === 1 && <div className="animate-page-in"><h3 className="text-white text-xl font-semibold">Como é o seu veículo?</h3><div className="grid sm:grid-cols-2 gap-3 mt-5">{vehicleCategories.map((item) => <button key={item.id} onClick={() => setVehicle(item.id)} className={`p-4 text-left rounded-2xl border flex items-center gap-3 transition-all duration-300 ${vehicle === item.id ? 'border-brand-green bg-brand-green/10 text-brand-green' : 'border-white/10 text-white/70 hover:border-white/35'}`}><VehicleIconFor id={item.id} className="w-7 h-7" /><span className="text-sm font-medium">{item.label}</span></button>)}</div><h3 className="text-white text-xl font-semibold mt-9">Escolha o cuidado</h3><div className="space-y-3 mt-5">{services.map((item) => <button key={item.id} onClick={() => setServiceId(item.id)} className={`w-full p-4 rounded-2xl border text-left flex items-center justify-between transition-all duration-300 ${serviceId === item.id ? 'border-brand-green bg-brand-green/10' : 'border-white/10 hover:border-white/35'}`}><div><p className={serviceId === item.id ? 'text-brand-green font-medium' : 'text-white font-medium'}>{item.label}</p><p className="text-white/40 text-xs mt-1">{item.duration} · {item.description}</p></div><span className="text-white text-lg font-semibold">{item.price} €</span></button>)}</div></div>}
+
+          {step === 2 && (
+            <div className="animate-page-in">
+              <div className="flex items-center justify-between gap-4"><div><h3 className="text-white text-xl font-semibold">Escolha uma data</h3><p className="text-white/40 text-xs mt-1">Os horários aparecem depois da seleção.</p></div><div className="flex gap-2"><button onClick={() => setMonth(new Date(month.getFullYear(), month.getMonth() - 1, 1))} disabled={isCurrentMonth} className="w-9 h-9 rounded-lg border border-white/10 text-white/70 disabled:opacity-20 hover:border-brand-green transition-all duration-300">‹</button><button onClick={() => setMonth(new Date(month.getFullYear(), month.getMonth() + 1, 1))} className="w-9 h-9 rounded-lg border border-white/10 text-white/70 hover:border-brand-green transition-all duration-300">›</button></div></div>
+              <p className="text-brand-green text-sm font-medium capitalize mt-6">{month.toLocaleDateString('pt-PT', { month: 'long', year: 'numeric' })}</p>
+              <div className="grid grid-cols-7 gap-1.5 mt-3">
+                {weekdays.map((weekday) => <span key={weekday} className="text-center text-[10px] text-white/35 uppercase py-1">{weekday}</span>)}
+                {days.map((day, index) => {
+                  if (!day) return <span key={`blank-${index}`} />
+                  const status = availabilityFor(day, today)
+                  const active = selectedDay?.toDateString() === day.toDateString()
+                  return <button key={day.toISOString()} disabled={status === 'past' || status === 'full'} onClick={() => chooseDay(day)} className={`relative h-11 sm:h-12 rounded-xl border text-sm transition-all duration-300 ${statusStyles[status]} ${active ? 'ring-2 ring-brand-green ring-offset-2 ring-offset-brand-dark2 border-brand-green bg-brand-green text-black font-bold' : ''}`}><span>{day.getDate()}</span>{status !== 'past' && <span className={`absolute bottom-1.5 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full ${status === 'open' ? 'bg-brand-green' : status === 'busy' ? 'bg-amber-400' : 'bg-red-400'}`} />}</button>
+                })}
+              </div>
+              {selectedDay && <div className="mt-8 pt-6 border-t border-white/10 animate-page-in"><div className="flex items-baseline justify-between"><h4 className="text-white font-semibold">Horários para {selectedDay.toLocaleDateString('pt-PT', { day: 'numeric', month: 'short' })}</h4><span className="text-brand-green text-xs">{selectedService.duration}</span></div>{slots.length ? <div className="grid grid-cols-3 sm:grid-cols-5 gap-2 mt-4">{slots.map((slot) => <button key={slot} onClick={() => setTime(slot)} className={`rounded-xl py-3 border text-sm transition-all duration-300 ${time === slot ? 'border-brand-green bg-brand-green text-black font-semibold' : 'border-white/10 text-white/65 hover:border-brand-green/60'}`}>{slot}</button>)}</div> : <p className="text-red-300 text-sm mt-4">Este dia já não comporta a duração deste serviço. Escolha outra data.</p>}</div>}
+            </div>
+          )}
+
+          {step === 3 && <div className="animate-page-in"><h3 className="text-white text-xl font-semibold">Confirme a pré-visualização</h3><div className="mt-6 rounded-2xl bg-black/20 border border-white/10 p-5 space-y-4 text-sm"><div className="flex justify-between gap-4"><span className="text-white/45">Serviço</span><span className="text-white text-right">{selectedService.label}</span></div><div className="flex justify-between gap-4"><span className="text-white/45">Veículo</span><span className="text-white text-right">{vehicleCategories.find((item) => item.id === vehicle).label}</span></div><div className="flex justify-between gap-4"><span className="text-white/45">Data e hora</span><span className="text-white text-right">{selectedDay?.toLocaleDateString('pt-PT')} · {time}</span></div><div className="flex justify-between gap-4 pt-4 border-t border-white/10"><span className="text-white/65">Valor estimado</span><span className="text-brand-green font-semibold text-lg">{selectedService.price} €</span></div></div><p className="text-white/35 text-xs mt-4">A confirmação nesta etapa é apenas uma demonstração visual.</p></div>}
+
+          <div className="mt-8 flex gap-3"><button onClick={() => setStep((current) => Math.max(1, current - 1))} disabled={step === 1} className="px-5 py-3 rounded-full border border-white/15 text-white/65 text-sm disabled:opacity-0 transition-all duration-300">Voltar</button><button onClick={next} disabled={(step === 2 && (!selectedDay || !time))} className="flex-1 bg-brand-green text-black py-3 rounded-full font-semibold text-sm hover:-translate-y-0.5 hover:shadow-neon disabled:opacity-30 disabled:hover:translate-y-0 disabled:hover:shadow-none transition-all duration-300">{step === 3 ? 'Concluir demonstração' : 'Continuar'}</button></div>
+        </Reveal>
+      </div>
+    </section>
+  )
+}

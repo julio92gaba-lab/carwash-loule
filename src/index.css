@@ -1,0 +1,46 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #0A0A0A;
+  color: #fff;
+  overflow-x: hidden;
+}
+
+html { scroll-behavior: smooth; }
+
+::selection { background: #2EFF6B; color: #0A0A0A; }
+
+.noise-overlay {
+  background-image: radial-gradient(rgba(255,255,255,.17) .6px, transparent .6px);
+  background-size: 8px 8px;
+}
+
+.grid-glow {
+  background-image: linear-gradient(rgba(46,255,107,.08) 1px, transparent 1px), linear-gradient(90deg, rgba(46,255,107,.08) 1px, transparent 1px);
+  background-size: 58px 58px;
+}
+
+.admin-card {
+  background: linear-gradient(145deg, rgba(30,30,30,.92), rgba(20,20,20,.92));
+  border: 1px solid rgba(255,255,255,.09);
+  border-radius: 1.25rem;
+}
+
+.animate-page-in { animation: page-in .45s ease-out both; }
+@keyframes page-in { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+
+.text-neon {
+  text-shadow: 0 0 6px rgba(46,255,107,0.9), 0 0 18px rgba(46,255,107,0.5);
+}
+
+.droplet-anim {
+  animation: droplet-fall 3.2s ease-in infinite;
+}
+@keyframes droplet-fall {
+  0% { transform: translateY(-10px); opacity: 0; }
+  20% { opacity: 1; }
+  100% { transform: translateY(60px); opacity: 0; }
+}
