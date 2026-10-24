@@ -15,6 +15,7 @@ export default function AdminPreview({ page }) {
   const [showRevenue, setShowRevenue] = useState(false)
   const [title, subtitle] = pageInfo[page]
   const isDashboard = page === 'Visão geral'
+  const isSettings = page === 'Definições'
 
   return <div className="max-w-6xl mx-auto animate-page-in">
     <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
@@ -22,6 +23,7 @@ export default function AdminPreview({ page }) {
       {isDashboard && <Link to="/admin/agenda" className="bg-brand-green text-black rounded-full px-5 py-3 text-sm font-semibold transition-all duration-300 hover:shadow-neon hover:-translate-y-0.5">Ver agenda</Link>}
     </div>
 
+    {isSettings && <div className="mb-6 overflow-x-auto"><div className="inline-flex min-w-max gap-2 rounded-2xl border border-white/10 bg-white/[.03] p-2">{['Horários', 'Serviços e valores', 'Produtos', 'Contactos', 'Informações da loja'].map((item, index) => <button key={item} type="button" className={`rounded-xl px-4 py-2.5 text-sm font-medium transition ${index === 0 ? 'bg-brand-green text-black' : 'text-white/55 hover:bg-white/5 hover:text-white'}`}>{item}</button>)}</div></div>}
     {isDashboard ? <>
       <div className="grid md:grid-cols-2 gap-6">
         <div className="admin-card p-6"><div className="flex items-start justify-between gap-4"><div><p className="text-white font-medium">Faturação</p><p className="text-white/45 text-sm mt-2">Os valores ficam ocultos por predefinição.</p></div><button type="button" onClick={() => setShowRevenue(!showRevenue)} className="rounded-xl border border-white/10 px-3 py-2 text-white/65 transition hover:border-brand-green hover:text-brand-green" aria-label={showRevenue ? 'Ocultar faturação' : 'Mostrar faturação'}>{showRevenue ? '◉' : '○'}</button></div><p className="mt-7 text-2xl font-semibold text-brand-green">{showRevenue ? 'Sem registos ainda' : '••••••'}</p></div>

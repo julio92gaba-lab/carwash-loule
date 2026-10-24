@@ -28,7 +28,7 @@ export default function Navbar({ onAgendar }) {
         scrolled ? 'bg-brand-dark/90 backdrop-blur-xl border-b border-white/10 shadow-2xl shadow-black/20' : 'bg-transparent border-b border-transparent'
       }`}
     >
-      <div className="max-w-6xl mx-auto px-5 flex items-center h-[68px] md:h-[76px]">
+      <div className="mx-auto flex h-[68px] w-full max-w-[1380px] items-center px-5 md:h-[76px] md:px-8">
         <button onClick={go('inicio')}>
           <Logo size="sm" />
         </button>

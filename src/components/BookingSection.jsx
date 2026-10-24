@@ -94,7 +94,7 @@ export default function BookingSection() {
   return (
     <section id="agendar" className="bg-brand-dark py-16 md:py-28 px-5 relative overflow-hidden">
       <div className="absolute inset-0 grid-glow opacity-25" />
-      <div className="relative max-w-6xl mx-auto grid lg:grid-cols-[.72fr_1.28fr] gap-10 items-start">
+      <div className="relative mx-auto grid w-full max-w-[1380px] items-start gap-10 lg:grid-cols-[.72fr_1.28fr]">
         <Reveal className="lg:sticky lg:top-28"><p className="text-brand-green text-xs uppercase tracking-[.25em] font-semibold">Reserve a sua vaga</p><h2 className="text-white text-4xl md:text-5xl font-bold tracking-[-.04em] leading-tight mt-4">Agendar ficou<br /><span className="text-brand-green text-neon">mais simples.</span></h2><p className="text-white/55 mt-5 max-w-sm leading-relaxed">Escolha o cuidado, consulte o mês completo e selecione o horário que melhor encaixa no seu dia.</p></Reveal>
 
         <div ref={formRef} className="scroll-mt-24"><Reveal delay={100} className="bg-brand-dark2/95 border border-white/10 rounded-[2rem] p-5 sm:p-8 shadow-2xl shadow-black/30">

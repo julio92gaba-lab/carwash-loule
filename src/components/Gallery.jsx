@@ -7,7 +7,7 @@ export default function Gallery() {
   const [selectedPhoto, setSelectedPhoto] = useState(null)
   return (
     <section id="galeria" className="bg-brand-dark py-16 md:py-28 px-5 overflow-hidden">
-      <div className="max-w-6xl mx-auto">
+      <div className="mx-auto w-full max-w-[1380px]">
         <Reveal className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-12">
           <div><p className="text-brand-green text-xs uppercase tracking-[.25em] font-semibold mb-3">Antes e depois</p><h2 className="text-white text-3xl md:text-5xl font-bold tracking-[-.04em]">Resultados que<br /><span className="text-brand-green text-neon">falam por si.</span></h2></div>
           <div><p className="text-white/45 text-sm max-w-xs">Veja de perto o cuidado aplicado a cada veículo.</p><Link to="/galeria" className="inline-flex mt-4 text-sm font-semibold text-brand-green transition hover:text-white">Ver galeria completa →</Link></div>

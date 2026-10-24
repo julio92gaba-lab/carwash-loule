@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Navigate } from 'react-router-dom'
+import { Link, Navigate } from 'react-router-dom'
 import Logo from '../../components/Logo'
 import { useAuth } from '../../lib/auth'
 
@@ -28,7 +28,7 @@ export default function Login() {
         <div className="p-8 sm:p-12 flex flex-col justify-between min-h-[300px] bg-gradient-to-br from-brand-green/15 to-transparent">
           <Logo size="md" />
           <div className="mt-16"><p className="text-brand-green text-xs uppercase tracking-[.25em] font-semibold">Área reservada</p><h1 className="text-white text-4xl font-semibold tracking-[-.04em] leading-tight mt-4">Gestão simples.<br />Visão completa.</h1><p className="text-white/50 text-sm mt-5 max-w-xs">Acompanhe a agenda, clientes e operação do Carwash Loulé num só lugar.</p></div>
-          <p className="text-white/30 text-xs mt-10">Pré-visualização do sistema administrativo</p>
+          <Link to="/" className="mt-10 inline-flex w-fit items-center gap-2 text-xs text-white/45 transition hover:text-brand-green"><span aria-hidden="true">←</span> Voltar à página inicial</Link>
         </div>
         <form onSubmit={handleSubmit} className="p-8 sm:p-12 bg-brand-dark/75 backdrop-blur">
         <div className="inline-flex gap-2 items-center text-brand-green text-xs border border-brand-green/20 bg-brand-green/5 rounded-full px-3 py-2"><span className="w-1.5 h-1.5 rounded-full bg-brand-green" />Acesso do proprietário</div>

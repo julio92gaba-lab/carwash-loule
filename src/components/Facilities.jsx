@@ -3,7 +3,7 @@ import Reveal from './Reveal'
 export default function Facilities() {
   return (
     <section className="bg-brand-dark px-5 py-16 md:py-28 overflow-hidden">
-      <div className="max-w-6xl mx-auto">
+      <div className="mx-auto w-full max-w-[1380px]">
         <Reveal className="flex flex-col md:flex-row md:items-end justify-between gap-5 mb-8 md:mb-12">
           <div>
             <p className="text-brand-green text-xs uppercase tracking-[.25em] font-semibold mb-3">O nosso espaço</p>

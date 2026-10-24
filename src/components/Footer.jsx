@@ -4,7 +4,7 @@ import Logo from './Logo'
 export default function Footer() {
   return (
     <footer className="bg-brand-dark border-t border-white/10 py-12 px-5">
-      <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+      <div className="mx-auto flex w-full max-w-[1380px] flex-col items-center justify-between gap-6 md:flex-row">
         <Logo size="sm" />
         <div className="text-white/50 text-sm text-center">
           <p>Av. Manuel Maria Laginha, 8100-231 Loulé</p>

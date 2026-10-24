@@ -15,7 +15,7 @@ export default function Hero({ onAgendar, onServices }) {
           style={{ left: `${7 + i * 17}%`, animationDelay: `${i * 0.55}s`, '--drop-distance': '44vh' }}
         />
       ))}
-      <div className="relative max-w-6xl w-full mx-auto grid lg:grid-cols-[.85fr_1.15fr] items-center gap-8">
+      <div className="relative mx-auto grid w-full max-w-[1380px] grid-cols-1 items-center gap-8 lg:grid-cols-[.85fr_1.15fr]">
         <div className="text-center lg:text-left z-10">
           <span className="inline-flex items-center gap-2 text-brand-green text-xs tracking-[0.25em] uppercase mb-6 border border-brand-green/30 bg-brand-green/5 px-3 py-2 rounded-full"><span className="w-1.5 h-1.5 bg-brand-green rounded-full animate-pulse" />Loulé · Algarve</span>
           <h1 className="text-white text-4xl sm:text-6xl md:text-7xl font-bold tracking-[-0.055em] leading-[.95]">
