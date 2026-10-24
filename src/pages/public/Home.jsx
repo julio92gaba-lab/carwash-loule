@@ -1,6 +1,7 @@
 import Navbar from '../../components/Navbar'
 import Hero from '../../components/Hero'
 import Differentials from '../../components/Differentials'
+import Facilities from '../../components/Facilities'
 import Services from '../../components/Services'
 import Gallery from '../../components/Gallery'
 import BookingSection from '../../components/BookingSection'
@@ -16,6 +17,7 @@ export default function Home() {
       <Navbar onAgendar={scrollToAgendar} />
       <Hero onAgendar={scrollToAgendar} onServices={scrollToServices} />
       <Differentials />
+      <Facilities />
       <Services />
       <Gallery />
       <BookingSection />

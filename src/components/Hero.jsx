@@ -2,9 +2,9 @@ import { DropletIcon } from './icons'
 
 export default function Hero({ onAgendar, onServices }) {
   return (
-    <section id="inicio" className="relative pt-24 pb-10 sm:pb-16 px-5 overflow-hidden bg-brand-dark min-h-[660px] lg:min-h-[760px] flex items-center">
+    <section id="inicio" className="relative pt-24 pb-10 sm:pb-16 px-5 overflow-hidden bg-[#101211] min-h-[660px] lg:min-h-[760px] flex items-center">
       <div
-        className="grid-glow absolute inset-0 opacity-60"
+        className="grid-glow absolute inset-0 opacity-35"
       />
       <div className="noise-overlay absolute inset-0 opacity-[0.07]" />
       <div className="absolute -right-32 top-1/4 w-[34rem] h-[34rem] rounded-full bg-brand-green/15 blur-[120px]" />
@@ -20,7 +20,7 @@ export default function Hero({ onAgendar, onServices }) {
           <span className="inline-flex items-center gap-2 text-brand-green text-xs tracking-[0.25em] uppercase mb-6 border border-brand-green/30 bg-brand-green/5 px-3 py-2 rounded-full"><span className="w-1.5 h-1.5 bg-brand-green rounded-full animate-pulse" />Loulé · Algarve</span>
           <h1 className="text-white text-4xl sm:text-6xl md:text-7xl font-bold tracking-[-0.055em] leading-[.95]">
             O seu carro,<br />
-            <span className="text-brand-green text-neon">sempre impecável.</span>
+            <span className="text-brand-green">sempre impecável.</span>
           </h1>
           <p className="hidden sm:block text-white/60 mt-7 md:text-lg max-w-lg mx-auto lg:mx-0">
           Sem cadastro, sem complicação. Escolha o serviço, a data e a hora — pronto.

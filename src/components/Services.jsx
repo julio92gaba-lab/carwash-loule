@@ -16,6 +16,7 @@ export default function Services() {
           </h2>
           </div><p className="text-white/50 text-sm max-w-xs">Escolha o nível de cuidado certo para o seu veículo.</p>
         </Reveal>
+          <p className="md:hidden mt-4 text-brand-green/80 text-xs font-medium">Valores apresentados a partir de · variam conforme a viatura.</p>
           <div className="mt-7 md:mt-12 grid md:grid-cols-3 gap-3 md:gap-5">
             {services.map((s, i) => {
               return (
@@ -31,7 +32,7 @@ export default function Services() {
                       {s.label}
                     </h3>
                     <p className="hidden md:block text-white/50 text-sm mt-3 leading-relaxed">{s.description}</p>
-                    <div className="mt-4 md:mt-8 pt-3 md:pt-5 border-t border-white/10 flex items-end justify-between"><div><div className="hidden md:block text-white/40 text-xs">a partir de</div><div className="text-white text-2xl md:text-3xl font-bold md:mt-1">{s.price} €</div></div><div className="text-brand-green text-sm font-medium">{s.duration}<br /><span className="hidden md:inline-block mt-2 group-hover:translate-x-1 transition-transform">Agendar →</span></div></div>
+                    <div className="mt-4 md:mt-8 pt-3 md:pt-5 border-t border-white/10 flex items-end justify-between"><div><div className="text-white/40 text-xs">a partir de</div><div className="text-white text-2xl md:text-3xl font-bold md:mt-1">{s.price} €</div></div><div className="text-brand-green text-sm font-medium">{s.duration}<br /><span className="hidden md:inline-block mt-2 group-hover:translate-x-1 transition-transform">Agendar →</span></div></div>
                   </button>
                 </Reveal>
               )

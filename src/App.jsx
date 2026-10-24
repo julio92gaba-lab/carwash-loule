@@ -6,6 +6,7 @@ import ProtectedRoute from './routes/ProtectedRoute'
 
 import Home from './pages/public/Home'
 import About from './pages/public/About'
+import Privacy from './pages/public/Privacy'
 
 import Login from './pages/admin/Login'
 import AdminPreview from './pages/admin/AdminPreview'
@@ -17,6 +18,7 @@ export default function App() {
         <Route element={<PublicLayout />}>
           <Route path="/" element={<Home />} />
           <Route path="/sobre" element={<About />} />
+          <Route path="/privacidade" element={<Privacy />} />
         </Route>
 
         <Route path="/admin/login" element={<Login />} />
