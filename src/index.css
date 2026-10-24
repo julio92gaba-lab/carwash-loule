@@ -42,5 +42,5 @@ html { scroll-behavior: smooth; }
 @keyframes droplet-fall {
   0% { transform: translateY(-10px); opacity: 0; }
   20% { opacity: 1; }
-  100% { transform: translateY(60px); opacity: 0; }
+  100% { transform: translateY(var(--drop-distance, 60px)); opacity: 0; }
 }
