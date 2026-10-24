@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import Reveal from './Reveal'
 import { services, vehicleCategories } from '../lib/demoContent'
 import { VehicleIconFor } from './icons'
@@ -54,12 +54,21 @@ export default function BookingSection() {
   const [sendEmail, setSendEmail] = useState(false)
   const [email, setEmail] = useState('')
   const [done, setDone] = useState(false)
+  const formRef = useRef(null)
+  const previousStep = useRef(step)
   const today = useMemo(() => atMidnight(new Date()), [])
   const selectedService = services.find((item) => item.id === serviceId)
   const selectedPrice = priceFor(selectedService, vehicle)
   const days = calendarDays(month)
   const slots = slotsFor(selectedService, selectedDay)
   const isCurrentMonth = month.getFullYear() === today.getFullYear() && month.getMonth() === today.getMonth()
+
+  useEffect(() => {
+    if (previousStep.current !== step) {
+      requestAnimationFrame(() => formRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }))
+      previousStep.current = step
+    }
+  }, [step])
 
   function chooseDay(day) {
     const status = availabilityFor(day, today)
@@ -82,7 +91,7 @@ export default function BookingSection() {
       <div className="relative max-w-6xl mx-auto grid lg:grid-cols-[.72fr_1.28fr] gap-10 items-start">
         <Reveal className="lg:sticky lg:top-28"><p className="text-brand-green text-xs uppercase tracking-[.25em] font-semibold">Reserve a sua vaga</p><h2 className="text-white text-4xl md:text-5xl font-bold tracking-[-.04em] leading-tight mt-4">Agendar ficou<br /><span className="text-brand-green text-neon">mais simples.</span></h2><p className="text-white/55 mt-5 max-w-sm leading-relaxed">Escolha o cuidado, consulte o mês completo e selecione o horário que melhor encaixa no seu dia.</p></Reveal>
 
-        <Reveal delay={100} className="bg-brand-dark2/95 border border-white/10 rounded-[2rem] p-5 sm:p-8 shadow-2xl shadow-black/30">
+        <div ref={formRef} className="scroll-mt-24"><Reveal delay={100} className="bg-brand-dark2/95 border border-white/10 rounded-[2rem] p-5 sm:p-8 shadow-2xl shadow-black/30">
           <div className="flex gap-2 mb-9">{['Serviço', 'Data e hora', 'Confirmar'].map((label, index) => { const number = index + 1; return <div key={label} className="flex-1"><div className={`h-1 rounded-full ${number <= step ? 'bg-brand-green' : 'bg-white/10'}`} /><p className={`text-xs mt-2 ${number === step ? 'text-brand-green' : 'text-white/35'}`}>{number}. {label}</p></div> })}</div>
 
           {step === 1 && <div className="animate-page-in"><h3 className="text-white text-xl font-semibold">Como é o seu veículo?</h3><div className="grid sm:grid-cols-2 gap-3 mt-5">{vehicleCategories.map((item) => <button key={item.id} onClick={() => setVehicle(item.id)} className={`p-4 text-left rounded-2xl border flex items-center gap-3 transition-all duration-300 ${vehicle === item.id ? 'border-brand-green bg-brand-green/10 text-brand-green' : 'border-white/10 text-white/70 hover:border-white/35'}`}><VehicleIconFor id={item.id} className="w-7 h-7" /><span className="text-sm font-medium">{item.label}</span></button>)}</div><h3 className="text-white text-xl font-semibold mt-9">Escolha o cuidado</h3><div className="space-y-3 mt-5">{services.map((item) => <button key={item.id} onClick={() => setServiceId(item.id)} className={`w-full p-4 rounded-2xl border text-left flex items-center justify-between transition-all duration-300 ${serviceId === item.id ? 'border-brand-green bg-brand-green/10' : 'border-white/10 hover:border-white/35'}`}><div><p className={serviceId === item.id ? 'text-brand-green font-medium' : 'text-white font-medium'}>{item.label}</p><p className="text-white/40 text-xs mt-1">{item.duration} · {item.description}</p></div><span className="text-right"><span className="block text-white/35 text-[10px] uppercase tracking-wide">a partir de</span><span className="text-white text-lg font-semibold">{priceFor(item, vehicle)} €</span></span></button>)}</div></div>}
@@ -109,7 +118,7 @@ export default function BookingSection() {
           {step === 3 && <div className="animate-page-in"><h3 className="text-white text-xl font-semibold">Confirme o agendamento</h3><div className="mt-6 rounded-2xl bg-black/20 border border-white/10 p-5 space-y-4 text-sm"><div className="flex justify-between gap-4"><span className="text-white/45">Serviço</span><span className="text-white text-right">{selectedService.label}</span></div><div className="flex justify-between gap-4"><span className="text-white/45">Veículo</span><span className="text-white text-right">{vehicleCategories.find((item) => item.id === vehicle).label}</span></div><div className="flex justify-between gap-4"><span className="text-white/45">Data e hora</span><span className="text-white text-right">{selectedDay?.toLocaleDateString('pt-PT')} · {time}</span></div><div className="flex justify-between gap-4 pt-4 border-t border-white/10"><span className="text-white/65">Valor estimado</span><span className="text-brand-green font-semibold text-lg">{selectedPrice} €</span></div></div><label className="mt-5 flex items-start gap-3 rounded-2xl border border-white/10 bg-white/[.03] p-4 cursor-pointer"><input type="checkbox" checked={sendEmail} onChange={(event) => setSendEmail(event.target.checked)} className="mt-1 accent-brand-green" /><span><span className="block text-white text-sm font-medium">Receber confirmação por e-mail</span><span className="block text-white/45 text-xs mt-1">Enviaremos o resumo do seu agendamento.</span></span></label>{sendEmail && <input type="email" value={email} onChange={(event) => setEmail(event.target.value)} placeholder="O seu e-mail" required className="mt-3 w-full rounded-xl border border-white/10 bg-black/20 px-4 py-3 text-sm text-white outline-none placeholder:text-white/35 focus:border-brand-green transition-all duration-300" />}</div>}
 
           <div className="mt-8 flex gap-3"><button onClick={() => setStep((current) => Math.max(1, current - 1))} disabled={step === 1} className="px-5 py-3 rounded-full border border-white/15 text-white/65 text-sm disabled:opacity-0 transition-all duration-300">Voltar</button><button onClick={next} disabled={(step === 2 && (!selectedDay || !time)) || (step === 3 && sendEmail && !email)} className="flex-1 bg-brand-green text-black py-3 rounded-full font-semibold text-sm hover:-translate-y-0.5 hover:shadow-neon disabled:opacity-30 disabled:hover:translate-y-0 disabled:hover:shadow-none transition-all duration-300">{step === 3 ? 'Concluir agendamento' : 'Continuar'}</button></div>
-        </Reveal>
+        </Reveal></div>
       </div>
     </section>
   )
