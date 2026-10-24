@@ -24,7 +24,7 @@ export default function Gallery() {
             <Reveal
               key={photo.src}
               delay={i * 80}
-              className={`group relative min-h-[150px] md:min-h-0 rounded-2xl overflow-hidden border border-white/10 bg-gradient-to-br from-brand-dark3 to-brand-dark2 flex items-center justify-center cursor-pointer ${i === 0 ? 'md:row-span-2' : ''}`}
+              className={`group relative min-h-[150px] md:min-h-0 rounded-2xl overflow-hidden border border-white/10 bg-gradient-to-br from-brand-dark3 to-brand-dark2 flex items-center justify-center cursor-pointer ${i === 0 ? 'md:row-span-2' : ''} ${i === photos.length - 1 ? 'col-span-2 md:col-span-1' : ''}`}
             >
               <button type="button" aria-label={`Ampliar ${photo.alt}`} onClick={() => setSelectedPhoto(photo)} className="absolute inset-0 z-10" />
               <img src={photo.src} alt={photo.alt} loading="lazy" className="absolute inset-0 h-full w-full object-cover grayscale-[.2] group-hover:scale-110 group-hover:grayscale-0 transition-all duration-700" />

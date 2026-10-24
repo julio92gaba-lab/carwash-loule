@@ -11,7 +11,7 @@ export default function Navbar({ onAgendar }) {
   const links = [
     ['Início', go('inicio')],
     ['Serviços', go('servicos')],
-    ['Resultados', go('galeria')],
+    ['Galeria', go('galeria')],
     ['Contacto', go('localizacao')],
   ]
 
@@ -31,9 +31,8 @@ export default function Navbar({ onAgendar }) {
               {label}
             </button>
           ))}
-          <Link to="/admin/login" className="text-white/55 hover:text-white text-xs transition-all duration-300">
-            Área da gerência
-          </Link>
+          <Link to="/sobre" className="text-white/80 hover:text-brand-green text-sm font-medium transition">Sobre</Link>
+          <Link to="/admin/login" className="text-white/55 hover:text-white text-xs transition-all duration-300">Área Privada</Link>
           <button
             onClick={onAgendar}
             className="bg-brand-green text-black text-sm font-semibold px-5 py-2.5 rounded-full hover:shadow-neon hover:-translate-y-0.5 transition-all duration-300"
@@ -51,14 +50,18 @@ export default function Navbar({ onAgendar }) {
         </div>
       </div>
       {open && (
-        <div className="md:hidden absolute top-full inset-x-3 rounded-2xl bg-brand-dark2/95 backdrop-blur-xl border border-white/10 p-3 shadow-2xl flex flex-col gap-1">
+        <>
+        <button aria-label="Fechar menu" onClick={() => setOpen(false)} className="md:hidden fixed inset-0 top-[68px] bg-black/45 backdrop-blur-sm" />
+        <div className="md:hidden absolute top-full inset-x-3 z-10 rounded-2xl bg-brand-dark2/95 backdrop-blur-xl border border-white/10 p-3 shadow-2xl flex flex-col gap-1">
           {links.map(([label, fn]) => (
             <button key={label} onClick={() => { fn(); setOpen(false) }} className="text-white/80 hover:text-brand-green text-sm font-medium text-left rounded-xl px-4 py-3 hover:bg-white/5">
               {label}
             </button>
           ))}
-          <Link to="/admin/login" onClick={() => setOpen(false)} className="mt-2 rounded-xl border border-brand-green/30 bg-brand-green/10 px-4 py-3 text-brand-green text-sm font-medium">Área da gerência <span className="text-white/45">· acesso privado</span></Link>
+          <Link to="/sobre" onClick={() => setOpen(false)} className="text-white/80 text-sm font-medium text-left rounded-xl px-4 py-3 hover:bg-white/5">Sobre</Link>
+          <Link to="/admin/login" onClick={() => setOpen(false)} className="mx-auto mt-2 flex w-[62%] flex-col items-center gap-2 rounded-2xl border border-brand-green/35 bg-brand-green/10 px-3 py-4 text-brand-green text-sm font-semibold"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="h-5 w-5"><path d="M4 20v-2a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v2" /><circle cx="12" cy="7" r="4" /></svg>Área Privada</Link>
         </div>
+        </>
       )}
     </header>
   )
