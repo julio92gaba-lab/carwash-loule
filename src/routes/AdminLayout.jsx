@@ -7,6 +7,7 @@ const menuItems = [
   { to: '/admin/clientes', label: 'Clientes' },
   { to: '/admin/financeiro', label: 'Financeiro' },
   { to: '/admin/stock', label: 'Stock' },
+  { to: '/admin/galeria', label: 'Galeria' },
   { to: '/admin/definicoes', label: 'Definições' },
 ]
 

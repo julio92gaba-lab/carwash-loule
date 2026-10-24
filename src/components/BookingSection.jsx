@@ -70,6 +70,12 @@ export default function BookingSection() {
     }
   }, [step])
 
+  useEffect(() => {
+    if (done) {
+      requestAnimationFrame(() => document.getElementById('agendar')?.scrollIntoView({ behavior: 'smooth', block: 'start' }))
+    }
+  }, [done])
+
   function chooseDay(day) {
     const status = availabilityFor(day, today)
     if (status === 'past' || status === 'full') return

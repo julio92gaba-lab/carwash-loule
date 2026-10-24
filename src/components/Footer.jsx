@@ -17,7 +17,7 @@ export default function Footer() {
           WhatsApp
         </a></div>
       </div>
-      <p className="text-white/30 text-xs text-center mt-8">© {new Date().getFullYear()} Carwash Loulé</p>
+      <p className="text-white/30 text-xs text-center mt-8">© {new Date().getFullYear()} Carwash Loulé — By JC</p>
     </footer>
   )
 }
